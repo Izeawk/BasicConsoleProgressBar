@@ -100,15 +100,4 @@ public class ProgressBar
             Console.SetCursorPosition(0, Console.CursorTop + 1);
         }
     }
-
-    public static void SampleProgressBar(ProgressBar PB)
-    {
-        /* Example Loop from the lower bound value to the upper bound value */
-        for (double i = PB.LowerBound; i <= PB.UpperBound; i++)
-        {
-            PB.LowerBound = i;
-            PrintProgressBar(PB);
-            Thread.Sleep(20);
-        }
-    }
 }
