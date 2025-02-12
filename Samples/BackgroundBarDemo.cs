@@ -1,7 +1,5 @@
-﻿
-namespace ProgressBarLibrary.Samples
+﻿namespace ProgressBarLibrary.Samples;
+
+public class BackgroundBarDemo
 {
-    public class BackgroundBarDemo
-    {
-    }
 }
