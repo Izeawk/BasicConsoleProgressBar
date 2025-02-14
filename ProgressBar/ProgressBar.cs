@@ -1,4 +1,7 @@
-﻿namespace ProgressBarLibrary.ProgressBar;
+﻿using System;
+using System.Threading;
+
+namespace ProgressBarLibrary.ProgressBar;
 
 public class ProgressBar
 {
@@ -60,7 +63,7 @@ public class ProgressBar
     public string? Graphic { get; set; } = "■";
     public ConsoleColor Color { get; set; } = ConsoleColor.White;
     public bool? ShowPercentage { get; set; } = null;
-    public int PercentagePosition { get; set; } = 3; // 1 = left, 2 = right, 3 = inside
+    public int PercentagePosition { get; set; } = 3; // 0 = off, 1 = left, 2 = right, 3 = inside
     public double LowerBound { get; set; } = 0;
     public double UpperBound { get; set; } = 100;
 
@@ -70,7 +73,7 @@ public class ProgressBar
         int Percentage = (int)Math.Round(PB.LowerBound / PB.UpperBound * 100, 0);
         Console.ForegroundColor = PB.Color;
 
-        if (PB.ShowPercentage != null)
+        if (PB.ShowPercentage != null && PB.ShowPercentage != false)
         {
             switch (PB.PercentagePosition)
             {
@@ -93,10 +96,10 @@ public class ProgressBar
             Console.Write("\r{0}  ", $"[{string.Concat(Enumerable.Repeat(PB.Graphic, Percentage))}{string.Concat(Enumerable.Repeat(" ", 100 - Percentage))}]");
         }
 
-        if (PB.LowerBound == PB.UpperBound)
+        if (PB.LowerBound == PB.UpperBound) // process is 100% complete, thread can end
         {
             Console.CursorVisible = true;
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ResetColor();
             Console.SetCursorPosition(0, Console.CursorTop + 1);
         }
     }
