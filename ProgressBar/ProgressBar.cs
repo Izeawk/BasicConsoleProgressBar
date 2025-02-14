@@ -67,40 +67,69 @@ public class ProgressBar
     public double LowerBound { get; set; } = 0;
     public double UpperBound { get; set; } = 100;
 
+    private static bool IsFirstPass = true;
+    private static int FirstPassLine = 0;
+
     public static void PrintProgressBar(ProgressBar PB)
     {
         Console.CursorVisible = false;
         int Percentage = (int)Math.Round(PB.LowerBound / PB.UpperBound * 100, 0);
         Console.ForegroundColor = PB.Color;
 
+        if (IsFirstPass)
+        {
+            IsFirstPass = false;
+            FirstPassLine = Console.GetCursorPosition().Top + 1;
+        }
+
         if (PB.ShowPercentage != null && PB.ShowPercentage != false)
         {
+            Console.SetCursorPosition(0, FirstPassLine);
             switch (PB.PercentagePosition)
             {
                 case 1:
-                    Console.Write("\r{0}  ", $"{Percentage}% [{string.Concat(Enumerable.Repeat(PB.Graphic, Percentage))}{string.Concat(Enumerable.Repeat(" ", 100 - Percentage))}]");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write("\r{0}  ", $"{Percentage}%");
+
+                    Console.ForegroundColor = PB.Color;
+                    Console.Write($"[{string.Concat(Enumerable.Repeat(PB.Graphic, Percentage))}{string.Concat(Enumerable.Repeat(" ", 100 - Percentage))}]");
                     break;
                 case 2:
-                    Console.Write("\r{0}  ", $"[{string.Concat(Enumerable.Repeat(PB.Graphic, Percentage))}{string.Concat(Enumerable.Repeat(" ", 100 - Percentage))}] {Percentage}%");
+                    Console.ForegroundColor = PB.Color;
+                    Console.Write("\r{0}  ", $"[{string.Concat(Enumerable.Repeat(PB.Graphic, Percentage))}{string.Concat(Enumerable.Repeat(" ", 100 - Percentage))}]");
+
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write($"{Percentage}%");
                     break;
                 case 3:
+                    Console.ForegroundColor = PB.Color;
                     Console.WriteLine("\r{0}  ", $"[{string.Concat(Enumerable.Repeat(PB.Graphic, Percentage))}{string.Concat(Enumerable.Repeat(" ", 100 - Percentage))}]");
+
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.SetCursorPosition(50, Console.CursorTop - 1);
                     Console.Write($"{Percentage}%");
                     break;
             }
+            Console.SetCursorPosition(0, Console.CursorTop + 1);
+            Console.ResetColor();
         }
 
         else
         {
+            Console.SetCursorPosition(0, FirstPassLine);
+
+            Console.ForegroundColor = PB.Color;
             Console.Write("\r{0}  ", $"[{string.Concat(Enumerable.Repeat(PB.Graphic, Percentage))}{string.Concat(Enumerable.Repeat(" ", 100 - Percentage))}]");
+
+            Console.SetCursorPosition(0, Console.CursorTop + 1);
+            Console.ResetColor();
         }
 
         if (PB.LowerBound == PB.UpperBound) // process is 100% complete, thread can end
         {
             Console.CursorVisible = true;
             Console.ResetColor();
-            Console.SetCursorPosition(0, Console.CursorTop + 1);
+            IsFirstPass = true;
         }
     }
 }

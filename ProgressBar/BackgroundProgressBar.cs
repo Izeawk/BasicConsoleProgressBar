@@ -54,15 +54,14 @@ public class BackgroundProgressBar
         {
             IsFirstPass = false;
             FirstPassLine = Console.GetCursorPosition().Top + 1;
-            Console.WriteLine($"First Pass Line: {FirstPassLine}");
         }
 
         if (BPB.ShowPercentage != null && BPB.ShowPercentage != false)
         {
+            Console.SetCursorPosition(0, FirstPassLine);
             switch (BPB.PercentagePosition)
             {
                 case 1:
-                    Console.SetCursorPosition(0, FirstPassLine);
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.Write("\r{0}", PercentageToPrint);
 
@@ -73,7 +72,6 @@ public class BackgroundProgressBar
                     Console.Write($"{string.Concat(Enumerable.Repeat("█", Math.Max(0, Console.WindowWidth - Math.Max(0, Percentage - PercentageToPrint.Length) - PercentageToPrint.Length)))}");
                     break;
                 case 2:
-                    Console.SetCursorPosition(0, FirstPassLine);
                     Console.ForegroundColor = BPB.ForegroundColor;
                     Console.Write("\r{0}", $"{string.Concat(Enumerable.Repeat("█", Math.Max(0, Percentage - PercentageToPrint.Length)))}");
 
@@ -84,7 +82,6 @@ public class BackgroundProgressBar
                     Console.Write(PercentageToPrint);
                     break;
                 case 3:
-                    Console.SetCursorPosition(0, FirstPassLine);
                     Console.ForegroundColor = BPB.ForegroundColor;
                     Console.Write("\r{0}", $"{string.Concat(Enumerable.Repeat("█", Math.Max(0, Percentage)))}");
 
