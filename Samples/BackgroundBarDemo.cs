@@ -9,6 +9,7 @@ public class BackgroundBarDemo
         {
             BPB.LowerBound = i; // To increment the bar (set i to your current value of progress)
             ProgressBar.BackgroundProgressBar.PrintProgressBar(BPB); // Printing the actual progress bar in the console window
+            Console.WriteLine($"Processing File #:{i}");
             Thread.Sleep(25);
         }
     }
